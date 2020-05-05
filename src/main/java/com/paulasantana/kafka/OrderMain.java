@@ -1,5 +1,6 @@
 package com.paulasantana.kafka;
 
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -14,15 +15,22 @@ public class OrderMain {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         var producer = new KafkaProducer<String, String>(properties());
         var value = "pedido5,450";
-        var record = new ProducerRecord<>("NEW_ORDER", value, value);
-        producer.send(record, (data,ex) -> {
+        var record = new ProducerRecord<>("ORDER_NEW", value, value);
+        Callback callback = (data, ex) -> {
 
-            if(ex != null){
+            if (ex != null) {
                 ex.printStackTrace();
                 return;
             }
-            System.out.println("Topic - "+data.topic() +" / Partition - "+ data.partition()+" / Offset - "+data.offset()+" / Timestamp - "+data.timestamp());
-        }).get();
+            System.out.println("Topic - " + data.topic() + " / Partition - " + data.partition() + " / Offset - " + data.offset() + " / Timestamp - " + data.timestamp());
+        };
+        producer.send(record, callback).get();
+        var email = "Welcome ! We are processing your order";
+        var emailRecord = new ProducerRecord<>("ORDER_EMAIL", email, email);
+
+        producer.send(emailRecord, callback).get();
+
+
     }
 
     private static Properties properties() {
