@@ -8,13 +8,15 @@ Baixe o arquivo .targz e descompact ele.
 
 #### Subir o Zookeeper: 
 Acesse a pasta do kafka que você descompactou, entre na pasta e em seguida abra o terminal neste diretório.
-Execute o comando no seu terminal para subir o Zookeeper: 
+Execute o comando no seu terminal para subir o Zookeeper:
+ 
   bin/zookeeper-server-start.sh config/zookeeper.properties
 
 Ao final do log ele irá informar que se concetou a porta 2181.
 
 #### Subir o Kafka:
  na mesma pasta abra o terminal e execute :
+
  bin/kafka-server-start.sh config/server.properties
  
  ##### Criar um tópico
@@ -44,4 +46,11 @@ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic NEW_ORDE
 
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic NEW_ORDER --from-beginning
 
+#### Alterar a partição via linha de comando:
+
+bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic ORDER_NEW --partitions 3
+
+#### Detalhar grupos de consumo por linha de comando:
+
+bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe
 
