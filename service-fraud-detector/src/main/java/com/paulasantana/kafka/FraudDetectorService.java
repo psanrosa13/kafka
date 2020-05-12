@@ -1,18 +1,10 @@
 package com.paulasantana.kafka;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
+import com.paulasantana.kafka.consumer.KafkaDispatcher;
+import com.paulasantana.kafka.dispatcher.KafkaService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 
-import java.time.Duration;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 public class FraudDetectorService {
@@ -27,7 +19,9 @@ public class FraudDetectorService {
 
     }
 
-    private void parse(ConsumerRecord<String, Order> record) {
+    private final KafkaDispatcher<Order> orderDispatcher = new KafkaDispatcher<Order>();
+
+    private void parse(ConsumerRecord<String, Order> record) throws ExecutionException, InterruptedException {
         System.out.println("---------------------------------------------------------------------");
         System.out.println("Processing new order, checking for fraud");
         System.out.println(record.key());
@@ -40,7 +34,16 @@ public class FraudDetectorService {
         }catch (InterruptedException | IllegalArgumentException e){
             e.printStackTrace();
         }
-        System.out.println("Order processed");
+
+        var order = record.value();
+
+        if(order.isFraud()){
+            System.out.println("Order is a fraud!!!!!");
+            orderDispatcher.send("ORDER_REJECTED", order.getEmail(),order);
+        }else{
+            orderDispatcher.send("ORDER_APPROVED", order.getEmail(),order);
+        }
+
     }
 
 }

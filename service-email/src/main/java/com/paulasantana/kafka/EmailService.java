@@ -1,5 +1,6 @@
 package com.paulasantana.kafka;
 
+import com.paulasantana.kafka.dispatcher.KafkaService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.HashMap;

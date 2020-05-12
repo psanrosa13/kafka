@@ -1,4 +1,4 @@
-package com.paulasantana.kafka;
+package br.com.paulasantana.ecommerce;
 
 public class Email {
 

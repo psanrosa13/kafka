@@ -54,3 +54,29 @@ bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic ORDER_NEW --parti
 
 bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe
 
+###Subir duas instâncias de KAFKA
+
+- Precisamos de outro arquivo de configuração.
+- Existem várias formas de se fazer essa cópia, mas no exemplo vamos apenas copiar o arquivo da pasta config/server.properties e renomeá-lo 
+
+cp config/server.properties config/server2.properties
+
+- Depois editar o arquivo de configuração copiado e alterar algumas propriedades:
+
+broker.id = 2
+
+log.dirs= ( apontar para outro arq de log )
+
+listeners = (alterar a porta )
+
+####Para configurar o diretório dos dados das mensagens :
+
+acesse o diretório config/ arquivo server.properties
+
+Altere a propriedade logs.dirs
+
+Necessário alterar a configuração do diretório de mensagens que esta no arquivo de configuração do Zookeerper
+
+altere a propriedade dataDir do arquivo config/zookeeper.properties
+
+

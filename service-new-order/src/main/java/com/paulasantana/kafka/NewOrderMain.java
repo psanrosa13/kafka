@@ -1,14 +1,8 @@
 package com.paulasantana.kafka;
 
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
+import com.paulasantana.kafka.consumer.KafkaDispatcher;
 
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -18,15 +12,17 @@ public class NewOrderMain {
         try(var orderDispatcher = new KafkaDispatcher<Order>()){
             try(var emailDispatcher = new KafkaDispatcher<Email>()) {
                 for (var i = 0; i < 10; i++) {
-                    var userId = UUID.randomUUID().toString();
+
                     var orderId = UUID.randomUUID().toString();
                     var amount = new BigDecimal(Math.random() * 5000 + 1);
-                    var order = new Order(userId, orderId, amount);
 
-                    orderDispatcher.send("ORDER_NEW", userId, order);
+                    var email = new Email(UUID.randomUUID().toString()+"@gmail.com","Welcome ! We are processing your order");
+                    var order = new Order(orderId, amount, email.getSubject());
 
-                    var email = new Email("teste@gmail.com","Welcome ! We are processing your order");
-                    emailDispatcher.send("ORDER_EMAIL", userId, email);
+                    orderDispatcher.send("ORDER_NEW", email.getSubject(), order);
+
+
+                    emailDispatcher.send("ORDER_EMAIL", email.getSubject(), email);
                 }
             }
         }
