@@ -1,6 +1,6 @@
 package com.paulasantana.kafka;
 
-import com.paulasantana.kafka.consumer.KafkaDispatcher;
+import com.paulasantana.kafka.producer.KafkaDispatcher;
 
 import java.math.BigDecimal;
 import java.util.UUID;

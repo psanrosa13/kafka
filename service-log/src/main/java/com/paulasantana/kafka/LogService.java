@@ -1,6 +1,6 @@
 package com.paulasantana.kafka;
 
-import com.paulasantana.kafka.dispatcher.KafkaService;
+import com.paulasantana.kafka.consumer.KafkaService;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;

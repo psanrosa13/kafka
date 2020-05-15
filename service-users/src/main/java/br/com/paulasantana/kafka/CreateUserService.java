@@ -1,7 +1,6 @@
 package br.com.paulasantana.kafka;
 
-import com.paulasantana.kafka.consumer.KafkaDispatcher;
-import com.paulasantana.kafka.dispatcher.KafkaService;
+import com.paulasantana.kafka.consumer.KafkaService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.sql.Connection;

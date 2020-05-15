@@ -1,10 +1,7 @@
 package br.com.paulasantana.ecommerce;
 
-import com.paulasantana.kafka.consumer.KafkaDispatcher;
-import org.eclipse.jetty.servlet.Source;
+import com.paulasantana.kafka.producer.KafkaDispatcher;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
