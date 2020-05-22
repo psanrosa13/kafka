@@ -1,5 +1,6 @@
 package com.paulasantana.kafka;
 
+import com.paulasantana.kafka.common.Message;
 import com.paulasantana.kafka.consumer.KafkaService;
 import com.paulasantana.kafka.producer.KafkaDispatcher;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -25,11 +26,12 @@ public class ReadingReportService {
 
     }
 
-    private void parse(ConsumerRecord<String, User> record) throws ExecutionException, InterruptedException, IOException {
+    private void parse(ConsumerRecord<String, Message<User>> record) throws ExecutionException, InterruptedException, IOException {
         System.out.println("---------------------------------------------------------------------");
         System.out.println("Processing report for "+ record.value());
 
-        var user = record.value();
+        var message = record.value();
+        var user = (User) message.getPayload();
         var target = new File(user.getReportPath());
         IO.copyTo(SOURCE, target);
         IO.append(target, "Created for "+user.getUuid());

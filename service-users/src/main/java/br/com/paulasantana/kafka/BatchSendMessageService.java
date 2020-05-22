@@ -1,5 +1,6 @@
 package br.com.paulasantana.kafka;
 
+import com.paulasantana.kafka.common.Message;
 import com.paulasantana.kafka.consumer.KafkaService;
 import com.paulasantana.kafka.producer.KafkaDispatcher;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -41,13 +42,14 @@ public class BatchSendMessageService {
 
     private final KafkaDispatcher<User> userDispatcher = new KafkaDispatcher<User>();
 
-    private void parse(ConsumerRecord<String, String> record) throws ExecutionException, InterruptedException, SQLException {
+    private void parse(ConsumerRecord<String, Message<String>> record) throws ExecutionException, InterruptedException, SQLException {
         System.out.println("---------------------------------------------------------------------");
         System.out.println("Processing new batch, checking for new user");
-        System.out.println("TOPIC : "+record.value());
+        var message = record.value();
+        System.out.println("TOPIC : "+message.getPayload());
 
         for (User user: getAllUsers()) {
-            userDispatcher.send( record.value(),  user.getUuid(), user);
+            userDispatcher.send((String) message.getPayload(),  user.getUuid(), user);
         }
     }
 

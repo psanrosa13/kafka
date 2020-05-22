@@ -1,5 +1,7 @@
 package com.paulasantana.kafka.producer;
 
+import com.paulasantana.kafka.common.CorreleationId;
+import com.paulasantana.kafka.common.Message;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -12,10 +14,10 @@ import java.util.concurrent.ExecutionException;
 
 public class KafkaDispatcher<T> implements Closeable {
 
-    private final KafkaProducer<String, T> producer;
+    private final KafkaProducer<String, Message<T>> producer;
 
    public KafkaDispatcher(){
-        this.producer = new KafkaProducer<String, T>(properties());
+        this.producer = new KafkaProducer<String, Message<T>>(properties());
     }
 
     private static Properties properties() {
@@ -29,7 +31,8 @@ public class KafkaDispatcher<T> implements Closeable {
         return properties;
     }
 
-    public void send(String topic, String key, T value) throws ExecutionException, InterruptedException {
+    public void send(String topic, String key, T payload) throws ExecutionException, InterruptedException {
+        var value = new Message<T>(new CorreleationId(), payload);
         var record = new ProducerRecord<>( topic, key, value);
         Callback callback = (data, ex) -> {
 
