@@ -31,10 +31,10 @@ public class BatchSendMessageService {
 
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ExecutionException, InterruptedException {
         var batchSendMessageService = new BatchSendMessageService();
         try(var service = new KafkaService(BatchSendMessageService.class.getSimpleName(),
-                "SEND_MESSAGE_TO_ALL_USERS", batchSendMessageService::parse, String.class,Map.of())){
+                "SEND_MESSAGE_TO_ALL_USERS", batchSendMessageService::parse, Map.of())){
             service.run();
         }
 

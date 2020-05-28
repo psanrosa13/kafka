@@ -28,10 +28,10 @@ public class CreateUserService {
 
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ExecutionException, InterruptedException {
         var createUserService = new CreateUserService();
         try(var service = new KafkaService(CreateUserService.class.getSimpleName(),
-                "ORDER_NEW", createUserService::parse, Order.class,
+                "ORDER_NEW", createUserService::parse,
                 new HashMap<String,String>())){
             service.run();
         }

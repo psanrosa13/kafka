@@ -5,13 +5,14 @@ import com.paulasantana.consumer.KafkaService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class EmailService {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         var emailService = new EmailService();
         var service = new KafkaService( EmailService.class.getSimpleName(),
-                "ORDER_EMAIL", emailService::parse, Email.class,
+                "ORDER_EMAIL", emailService::parse,
                 new HashMap<String,String>());
         service.run();
     }

@@ -2,15 +2,13 @@ package com.paulasantana.producer;
 
 import com.paulasantana.common.CorreleationId;
 import com.paulasantana.common.Message;
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.io.Closeable;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class KafkaDispatcher<T> implements Closeable {
 
@@ -19,8 +17,6 @@ public class KafkaDispatcher<T> implements Closeable {
     public KafkaDispatcher(){
         this.producer = new KafkaProducer<String, Message<T>>(properties());
     }
-
-
 
     private static Properties properties() {
         var properties = new Properties();
@@ -34,6 +30,11 @@ public class KafkaDispatcher<T> implements Closeable {
     }
 
     public void send(String topic, String key, T payload, CorreleationId correlationId) throws ExecutionException, InterruptedException {
+        Future<RecordMetadata> future = sendAsync(topic, key, payload, correlationId);
+        future.get();
+    }
+
+    private Future<RecordMetadata> sendAsync(String topic, String key, T payload, CorreleationId correlationId) {
         var value = new Message<T>(correlationId, payload);
         var record = new ProducerRecord<>( topic, key, value);
         Callback callback = (data, ex) -> {
@@ -44,9 +45,9 @@ public class KafkaDispatcher<T> implements Closeable {
             }
             System.out.println("Topic - " + data.topic() + " / Partition - " + data.partition() + " / Offset - " + data.offset() + " / Timestamp - " + data.timestamp());
         };
-        producer.send(record, callback).get();
-
+        return producer.send(record, callback);
     }
+
 
     @Override
     public void close()  {
