@@ -29,13 +29,11 @@ public class NewOrderServlet extends HttpServlet {
         try {
             var orderId = UUID.randomUUID().toString();
             var amount = new BigDecimal(req.getParameter("amount"));
+            var email = req.getParameter("email");
 
-            var email = new Email(req.getParameter("email"), "Welcome ! We are processing your order");
-            var order = new Order(orderId, amount, email.getSubject());
+            var order = new Order(orderId, amount, email);
 
-            orderDispatcher.send("ORDER_NEW", email.getSubject(), order, new CorreleationId(NewOrderServlet.class.getSimpleName()));
-
-            emailDispatcher.send("ORDER_EMAIL", email.getSubject(), email, new CorreleationId(NewOrderServlet.class.getSimpleName()));
+            orderDispatcher.send("ORDER_NEW", email, order, new CorreleationId(NewOrderServlet.class.getSimpleName()));
 
             System.out.println("New Order sent sucessfully");
 

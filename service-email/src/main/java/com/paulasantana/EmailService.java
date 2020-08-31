@@ -1,23 +1,27 @@
 package com.paulasantana;
 
 import com.paulasantana.common.Message;
-import com.paulasantana.consumer.KafkaService;
+import com.paulasantana.consumer.ConsumerService;
+import com.paulasantana.consumer.ServiceRunner;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-public class EmailService {
+public class EmailService implements ConsumerService<Email> {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        var emailService = new EmailService();
-        var service = new KafkaService( EmailService.class.getSimpleName(),
-                "ORDER_EMAIL", emailService::parse,
-                new HashMap<String,String>());
-        service.run();
+       new ServiceRunner(EmailService::new).start(5);
     }
 
-    private void parse(ConsumerRecord<String, Message<Email>> record) {
+    public String getConsumerGroup(){
+        return EmailService.class.getSimpleName();
+    }
+
+    public String getTopic(){
+        return "ORDER_EMAIL";
+    }
+
+    public void parse(ConsumerRecord<String, Message<Email>> record) {
 
         System.out.println("---------------------------------------------------------------------");
         System.out.println("Send E-mail");
