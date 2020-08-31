@@ -54,6 +54,9 @@ bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic ORDER_NEW --parti
 
 bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe
 
+consultar por consumidores por grupo.
+bin/kafka-consumer-groups.sh --all-groups --bootstrap-server localhost:9092 --describe
+
 ###Subir duas instâncias de KAFKA
 
 - Precisamos de outro arquivo de configuração.
