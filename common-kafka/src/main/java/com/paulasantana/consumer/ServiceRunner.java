@@ -9,7 +9,7 @@ public class ServiceRunner<T> {
     this.provider = new ServiceProvider<>(factory);
   }
 
-  public void start(int threadCount){
+  public void start(int threadCount) {
     var pool = Executors.newFixedThreadPool(threadCount);
     for (int i = 0; i <= threadCount; i++) {
       pool.submit(provider);

@@ -4,20 +4,20 @@ import java.util.UUID;
 
 public class CorreleationId {
 
-    private final String id;
+  private final String id;
 
-    public CorreleationId(String title) {
-        this.id = title + "(" + UUID.randomUUID().toString() + ")";
-    }
+  public CorreleationId(String title) {
+    this.id = title + "(" + UUID.randomUUID().toString() + ")";
+  }
 
-    @Override
-    public String toString() {
-        return "CorreleationId{" +
-                "id='" + id + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "CorreleationId{" +
+        "id='" + id + '\'' +
+        '}';
+  }
 
-    public CorreleationId continueWith(String title) {
-        return new CorreleationId(id+"-"+title);
-    }
+  public CorreleationId continueWith(String title) {
+    return new CorreleationId(id + "-" + title);
+  }
 }

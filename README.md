@@ -1,3 +1,10 @@
+# Projeto
+1- subir o servlet http que esta no modulo service-ecommerce.
+   Executar a classe HttpEcommerceService.
+2- Serviço para criar sua compra, exemplo de requisição:
+    http://localhost:8080/new?email=psanrosa11@gmail.com&amount=45
+
+
 # kafka
 Projeto do curso de Kafka
 
