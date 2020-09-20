@@ -1,31 +1,24 @@
 package com.paulasantana;
 
+import br.com.ecommerce.database.LocalDatabase;
 import com.paulasantana.common.Message;
 import com.paulasantana.consumer.ConsumerService;
 import com.paulasantana.consumer.ServiceRunner;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class CreateUserService implements ConsumerService<Order> {
 
-  private final Connection connection;
+  private LocalDatabase database;
 
-  private CreateUserService() throws SQLException {
-    String url = "jdbc:sqlite:target/users_database.db";
-    this.connection = DriverManager.getConnection(url);
-    try {
-      this.connection.createStatement().execute("create table Users(" +
-          "uuid varchar(200) primary key," +
-          "email varchar(200))");
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
+  CreateUserService() throws SQLException {
+    this.database = new LocalDatabase("users_database");
+    this.database.createIfNotExists("create table Users(" +
+        "uuid varchar(200) primary key," +
+        "email varchar(200))");
   }
 
   public static void main(String[] args) throws SQLException, ExecutionException, InterruptedException {
@@ -56,21 +49,15 @@ public class CreateUserService implements ConsumerService<Order> {
   }
 
   private void insertNewUser(String email) throws SQLException {
-    var insert = connection.prepareStatement("insert into Users (uuid, email) " +
-        "values (?,?)");
-    insert.setString(1, UUID.randomUUID().toString());
-    insert.setString(2, email);
-
-    insert.execute();
+    var uuid = UUID.randomUUID().toString();
+    this.database.update("insert into Users (uuid, email) " +
+        "values (?,?)", uuid, email);
 
     System.out.println("Usuário uuid e " + email + " adicionado");
   }
 
   private boolean isNewUser(String email) throws SQLException {
-    var query = connection.prepareStatement("select uuid from Users where email = ? limit 1");
-    query.setString(1, email);
-    var results = query.executeQuery();
-
+    var results = this.database.query("select uuid from Users where email = ? limit 1", email);
     return !results.next();
   }
 }

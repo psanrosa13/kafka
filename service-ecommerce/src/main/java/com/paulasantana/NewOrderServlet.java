@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -30,19 +31,23 @@ public class NewOrderServlet extends HttpServlet {
       var orderId = UUID.randomUUID().toString();
       var amount = new BigDecimal(req.getParameter("amount"));
       var email = req.getParameter("email");
-
       var order = new Order(orderId, amount, email);
 
-      orderDispatcher.send("ORDER_NEW", email, order, new CorreleationId(NewOrderServlet.class.getSimpleName()));
+      var database = new OrdersDatabase();
+      if (database.saveNew(order)) {
+        orderDispatcher.send("ORDER_NEW", email, order, new CorreleationId(NewOrderServlet.class.getSimpleName()));
 
-      System.out.println("New Order sent sucessfully");
+        System.out.println("New Order sent sucessfully");
 
-      resp.getWriter().println("New Order sent");
-      resp.setStatus(HttpServletResponse.SC_OK);
-    } catch (ExecutionException e) {
+        resp.getWriter().println("New Order sent");
+        resp.setStatus(HttpServletResponse.SC_OK);
+      } else {
+        System.out.println("Old order received");
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.getWriter().println("Old order received");
+      }
+    } catch (ExecutionException | SQLException | InterruptedException e) {
       throw new ServletException(e);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
     }
   }
 }
