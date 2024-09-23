@@ -5,7 +5,7 @@
     <parent>
         <artifactId>kafka</artifactId>
         <groupId>org.paulasantana</groupId>
-        <version>1.0</version>
+        <version>2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,8 +19,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
                     <configuration>
-                        <source>14</source>
-                        <target>14</target>
+                        <source>17</source>
+                        <target>17</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -30,8 +30,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>10</source>
-                    <target>10</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -40,13 +40,13 @@
         <dependency>
             <groupId>org.paulasantana</groupId>
             <artifactId>common-kafka</artifactId>
-            <version>1.0</version>
+            <version>2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.paulasantana</groupId>
             <artifactId>common-database</artifactId>
-            <version>1.0</version>
+            <version>2.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

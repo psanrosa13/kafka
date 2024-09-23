@@ -1,0 +1,8 @@
+com/paulasantana/User.class
+br/com/paulasantana/kafka/Order.class
+com/paulasantana/BatchSendMessageService.class
+com/paulasantana/CreateUserService.class
+br/com/paulasantana/kafka/BatchSendMessageService.class
+com/paulasantana/Order.class
+br/com/paulasantana/kafka/User.class
+br/com/paulasantana/kafka/CreateUserService.class

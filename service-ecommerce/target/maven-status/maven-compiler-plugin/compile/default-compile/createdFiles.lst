@@ -1,0 +1,11 @@
+com/paulasantana/HttpEcommerceService.class
+com/paulasantana/GenerateAllReportsServlet.class
+br/com/paulasantana/ecommerce/Email.class
+br/com/paulasantana/ecommerce/NewOrderServlet.class
+com/paulasantana/Email.class
+com/paulasantana/OrdersDatabase.class
+br/com/paulasantana/ecommerce/Order.class
+com/paulasantana/Order.class
+br/com/paulasantana/ecommerce/HttpEcommerceService.class
+br/com/paulasantana/ecommerce/GenerateAllReportsServlet.class
+com/paulasantana/NewOrderServlet.class

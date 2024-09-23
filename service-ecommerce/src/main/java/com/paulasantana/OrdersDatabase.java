@@ -31,6 +31,10 @@ public class OrdersDatabase implements Closeable {
 
   @Override
   public void close() throws IOException {
-    database.close();
+      try {
+          database.close();
+      } catch (SQLException e) {
+          throw new RuntimeException(e);
+      }
   }
 }
